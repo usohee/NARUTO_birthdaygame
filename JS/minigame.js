@@ -28,7 +28,7 @@ window.onload = function() {
         overlay.classList.remove('visible'); // 다시 검게 만들기
         
         setTimeout(() => {
-            window.location.href = './game.html';
+            window.location.href = 'HTML/game.html';
         }, 1000); // 1초 동안 어두워진 뒤 이동
     });
 

@@ -11,6 +11,6 @@ startButton.addEventListener('click', function() {
 
     // 3. 페이드 애니메이션 시간(0.8초)이 끝난 뒤에 페이지 이동
     setTimeout(function() {
-        window.location.href = './ID_card.html'; 
+        window.location.href = 'HTML/ID_card.html'; 
     }, 800); // CSS의 transition 시간과 맞추면 좋아요!
 });

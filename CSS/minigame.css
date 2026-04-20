@@ -98,7 +98,7 @@ body, html {
 
 @font-face {
     font-family: 'Mulmaru';
-    src: url('./assets/Mulmaru.ttf') format('truetype'); 
+    src: url('assets/fonts/Mulmaru.woff2') format('truetype'); 
     font-weight: normal;
     font-style: normal;
 }

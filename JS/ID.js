@@ -27,6 +27,6 @@ window.onload = function() {
     }, 8500); // 5500 + 3000ms
 
     setTimeout(() => {
-        window.location.href = './minigame.html';
+        window.location.href = 'HTML/main.html';
     }, 7000);
 };
