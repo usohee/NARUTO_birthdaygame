@@ -1,0 +1,80 @@
+.intro {
+    width: 100vw;
+    height: 100vh;
+    background-color: #000; 
+    
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+
+.center-img {
+    width: 80%; 
+    max-width: 800px; 
+    height: auto;
+    image-rendering: pixelated;
+    z-index: 1;
+}
+
+
+.main-logo {
+    position: absolute;
+    top: 30%;
+    width: 900px;
+    z-index: 2;
+    animation: floating 3s ease-in-out infinite;
+}
+
+
+.start-bt {
+    position: absolute;
+    bottom: 30%;
+    width: 200px;
+    z-index: 2;
+    cursor: pointer;
+}
+
+#start-btn {
+    width: 200px;
+    cursor: pointer;
+    transition: transform 0.1s; 
+}
+
+#start-btn:hover {
+    transform: scale(1.1);
+    filter: brightness(1.1);
+}
+
+
+#start-btn:active {
+    transform: scale(0.95);
+}
+
+.pixel-art {
+    image-rendering: pixelated;
+}
+
+@keyframes floating {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+#fade-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    opacity: 0;             /* 처음엔 투명하게 */
+    pointer-events: none;    /* 클릭 방해 안 되게 설정 */
+    z-index: 9999;          /* 모든 요소보다 위에 */
+    transition: opacity 0.8s; /* 0.8초 동안 스르륵 변함 */
+}
+
+/* 페이드 아웃이 시작될 때 붙여줄 클래스 */
+#fade-overlay.visible {
+    opacity: 1;             /* 검은색으로 불투명해짐 */
+}
