@@ -10,8 +10,10 @@ body, html {
 .show { opacity: 1; }
 
 #id-card-img {
-    width: 500px; /* 크기 조절 */
+    width: 700px; /* 크기 조절 */
     image-rendering: pixelated;
+    z-index: 1;
+    margin-top: 100px;
 }
 
 .pixel-font {

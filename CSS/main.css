@@ -12,7 +12,7 @@
 
 .center-img {
     width: 80%; 
-    max-width: 800px; 
+    max-width: 1000px; 
     height: auto;
     image-rendering: pixelated;
     z-index: 1;
@@ -31,13 +31,13 @@
 .start-bt {
     position: absolute;
     bottom: 30%;
-    width: 200px;
+    width: 400px;
     z-index: 2;
     cursor: pointer;
 }
 
 #start-btn {
-    width: 200px;
+    width: 250px;
     cursor: pointer;
     transition: transform 0.1s; 
 }
