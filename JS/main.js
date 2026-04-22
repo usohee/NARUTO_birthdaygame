@@ -1,5 +1,22 @@
 const startButton = document.getElementById('start-btn');
 const overlay = document.getElementById('fade-overlay');
+const bgm = document.getElementById('main-bgm');
+const soundBtn = document.getElementById('sound-toggle');
+const soundIcon = document.getElementById('sound-icon');
+
+bgm.volume = 0.2; // 볼륨 설정
+
+soundBtn.addEventListener('click', () => {
+    if (bgm.paused) {
+        // 소리가 꺼져있다면 -> 켜기
+        bgm.play();
+        soundIcon.src = 'assets/ui/sound_on.png'; // 켜진 아이콘으로 변경
+    } else {
+        // 소리가 켜져있다면 -> 끄기
+        bgm.pause();
+        soundIcon.src = 'assets/ui/sound_off.png'; // 꺼진 아이콘으로 변경
+    }
+});
 
 startButton.addEventListener('click', function() {
     // 1. '슉' 소리 재생

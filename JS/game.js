@@ -28,8 +28,6 @@ let idleTimer;
 const preload = (urls) => urls.forEach(url => { const img = new Image(); img.src = url; });
 preload(['assets/characters/kakashi.png', 'assets/characters/kakashi_skills.png', 'assets/ui/perfect.png']);
 
-/* --- 유틸리티 함수 --- */
-
 // 타이핑 효과 함수
 function typeWriter(element, text, speed = 100) {
     element.innerText = ""; 
