@@ -127,14 +127,44 @@ body, html {
 /* 화면 흔들기 애니메이션 */
 .shake {
     animation: shake-anim 0.1s infinite;
+    transform-origin: center;
+}
+
+/* 대사 텍스트 스타일 */
+.event-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    color: #ffffff; /* 흰색 글자 */
+    font-family: 'Mulmaru', sans-serif; /* 적용하신 웹폰트 */
+    font-size: 32px;
+    text-align: center;
+    white-space: nowrap; /* 줄바꿈 방지 (타이핑 효과용) */
+    
+    /* 텍스트 가독성을 위한 그림자 (나루토 로고 느낌의 붉은색/검은색 혼합 가능) */
+    text-shadow: 2px 2px 0px #000, 
+                 -2px -2px 0px #000, 
+                 2px -2px 0px #000, 
+                 -2px 2px 0px #000,
+                 0px 0px 10px rgba(255, 0, 0, 0.5); /* 은은한 붉은 광채 */
+
+    z-index: 3000; /* 암전 레이어(2000)보다 위에 배치 */
+    pointer-events: none; /* 클릭 방해 금지 */
+}
+
+@keyframes text-appear {
+    from { opacity: 0; transform: translate(-50%, -40%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
 }
 
 @keyframes shake-anim {
-    0% { transform: translate(0, 0); }
-    25% { transform: translate(5px, -5px); }
-    50% { transform: translate(-5px, 5px); }
-    75% { transform: translate(5px, 5px); }
-    100% { transform: translate(0, 0); }
+    0% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(8px, -8px) scale(1.01); }
+    50% { transform: translate(-8px, 8px) scale(1.01); }
+    75% { transform: translate(8px, 8px) scale(1.01); }
+    100% { transform: translate(0, 0) scale(1); }
 }
 
 @keyframes sign-flash {
