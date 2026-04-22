@@ -29,7 +29,7 @@ window.onload = function() {
         
         setTimeout(() => {
             window.location.href = 'game.html';
-        }, 1000); // 1초 동안 어두워진 뒤 이동
+        }); // 이동
     });
 
 };

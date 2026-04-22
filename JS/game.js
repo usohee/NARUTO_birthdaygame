@@ -90,6 +90,11 @@ async function playRound() {
     kakashiPattern = [];
     kakashiIntervals = [];
 
+    // [추가] 5라운드라면 정지했던 BGM을 다시 재생
+    if (currentRound === 5) {
+        bgm.play();
+    }
+
     // 카카시 시범 모드 전환: 이미지 변경 및 크기 확대(CSS 클래스)
     kakashiImg.src = 'assets/characters/kakashi_skills.png';
     kakashiImg.classList.add('skills-active'); 
@@ -206,6 +211,8 @@ async function checkSuccess() {
  */
 async function triggerAkatsuki() {
     isListening = false;
+    // bgm 일시 정지
+    bgm.pause();
     const overlay = document.getElementById('akatsuki-overlay');
     const video = document.getElementById('akatsuki-video');
     const textElement = document.getElementById('akatsuki-text');
@@ -213,6 +220,8 @@ async function triggerAkatsuki() {
 
     // 1. 화면 흔들림 시작
     document.body.classList.add('shake');
+    // 효과음
+    const boomSound = new Audio ('assets/Sounds/akatsuki_boom.mp3')
     
     // 2. 카카시 머리 위 surprise_balloon.png 등장
     setTimeout(() => {
@@ -227,7 +236,6 @@ async function triggerAkatsuki() {
     // 오버레이를 먼저 띄우고 텍스트를 넣습니다.
     overlay.style.display = 'flex';
     textElement.innerText = "이 기운은... 아카츠키인가?!"; 
-    console.log("대사 출력됨: " + textElement.innerText); // 콘솔창에서 확인용
 
     // 4. 대사 2초 유지 후 영상 재생
     await new Promise(res => setTimeout(res, 2000));
