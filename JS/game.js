@@ -120,10 +120,15 @@ async function playRound() {
 window.addEventListener('keydown', (event) => {
     if (event.code === 'Space') {
         event.preventDefault();
-        if (idleTimer) clearTimeout(idleTimer); 
 
-        // 첫 클릭 시 BGM 재생 시도 (브라우저 차단 우회용)
-        if (bgm.paused && currentRound < 5) bgm.play();
+        const akatsukiOverlay = document.getElementById('akatsuki-overlay');
+        const isAkatsukiEvent = akatsukiOverlay && akatsukiOverlay.style.display === 'flex';
+
+        if (idleTimer) clearTimeout(idleTimer);
+        if (idleTimer) clearTimeout(idleTimer); 
+        if (bgm.paused && currentRound < 5 && !isAkatsukiEvent) {
+            bgm.play().catch(() => {});
+        }
 
         if (isListening) {
             showRandomHandSign(); 
@@ -176,6 +181,7 @@ async function checkSuccess() {
 async function triggerAkatsuki() {
     isListening = false;
     bgm.pause(); // 아카츠키 난입 시 노래 끔
+    bgm.currentTime = bgm.currentTime; // 현재 위치 유지
 
     const gameContainer = document.querySelector('.game');
     const overlay = document.getElementById('akatsuki-overlay');
@@ -185,9 +191,8 @@ async function triggerAkatsuki() {
     gameContainer.classList.add('shake');
     
     // [수정] 효과음 재생
-    const boomSound = new Audio('assets/Sounds/akatsuki_boom.mp3');
+    const boomSound = new Audio('assets/sounds/akatsuki_boom.mp3');
     setTimeout(() => {
-        balloon.style.display = 'block';
         boomSound.play();
     }, 500);
 
