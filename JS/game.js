@@ -1,6 +1,3 @@
-/**
- * [전역 변수 설정]
- */
 let kakashiIntervals = []; // 카카시가 인을 맺는 시간 간격(ms)을 저장하는 배열
 let lastActionTime = 0;    // 마지막 동작이 일어난 시간을 기록
 
@@ -65,7 +62,7 @@ function showRandomHandSign() {
  */
 function showPerfect() {
     const perfectImg = document.createElement('img');
-    perfectImg.src = 'assets/perfect.png';
+    perfectImg.src = 'assets/ui/perfect.png';
     perfectImg.classList.add('perfect-ui'); 
     document.querySelector('.game').appendChild(perfectImg);
     
@@ -127,39 +124,36 @@ async function playRound() {
 
 /**
  * 5. 유저 클릭 이벤트 핸들러
- * 유저가 마우스를 클릭할 때마다 박자를 기록하고 판정합니다.
+ * 유저가 스페이스바를 누를 때마다 박자를 기록하고 판정합니다.
  */
-window.addEventListener('mousedown', () => {
-    // 클릭이 발생하는 순간 '10초 대기 이스터 에그' 타이머는 영구 해제됨
-    if (idleTimer) clearTimeout(idleTimer); 
+window.addEventListener('keydown', (event) => {
+    // 누른 키가 'Space'일 때만 작동 (event.code 사용)
+    if (event.code === 'Space') {
+        // 기본 스페이스바 동작(페이지 스크롤 등) 방지
+        event.preventDefault();
 
-    if (isListening) {
-        showRandomHandSign(); // 클릭할 때마다 '인' 표시
-        const now = Date.now();
-        
-        /**
-         * [박자 판정 로직]
-         * 두 번째 클릭부터는 이전 클릭과의 간격(Interval)을 계산하여
-         * 카카시가 보여준 간격과 오차 범위(400ms) 이내인지 비교합니다.
-         */
-        if (userPattern.length > 0) {
-            const userInterval = now - userPattern[userPattern.length - 1];
-            const targetInterval = kakashiIntervals[userPattern.length - 1];
+        if (idleTimer) clearTimeout(idleTimer); 
+
+        if (isListening) {
+            showRandomHandSign(); 
+            const now = Date.now();
             
-            // 박자 오차가 0.4초 이내면 Perfect! 판정
-            if (Math.abs(userInterval - targetInterval) < 400) {
+            if (userPattern.length > 0) {
+                const userInterval = now - userPattern[userPattern.length - 1];
+                const targetInterval = kakashiIntervals[userPattern.length - 1];
+                
+                if (Math.abs(userInterval - targetInterval) < 400) {
+                    showPerfect();
+                }
+            } else {
                 showPerfect();
             }
-        } else {
-            // 첫 번째 클릭은 기준점이 없으므로 무조건 Perfect 효과 제공
-            showPerfect();
-        }
 
-        userPattern.push(now); // 유저 클릭 시점 기록
+            userPattern.push(now);
 
-        // 카카시가 맺은 인의 횟수만큼 모두 누르면 성공 체크 진입
-        if (userPattern.length === kakashiPattern.length) {
-            checkSuccess();
+            if (userPattern.length === kakashiPattern.length) {
+                checkSuccess();
+            }
         }
     }
 });
@@ -209,25 +203,51 @@ async function checkSuccess() {
 
 /**
  * 7. 아카츠키 침입 이벤트
- * 4라운드 종료 시 화면이 흔들리고 아카츠키 영상이 재생되는 중간 연출입니다.
  */
 async function triggerAkatsuki() {
     isListening = false;
     const overlay = document.getElementById('akatsuki-overlay');
     const video = document.getElementById('akatsuki-video');
+    const textElement = document.getElementById('akatsuki-text');
+    const balloon = document.getElementById('surprise-balloon');
 
-    document.body.classList.add('shake'); // 화면 흔들림 효과 시작
-
-    // 1초간 흔든 후 영상 재생
-    await new Promise(res => setTimeout(res, 1000));
+    // 1. 화면 흔들림 시작
+    document.body.classList.add('shake');
     
+    // 2. 카카시 머리 위 surprise_balloon.png 등장
+    setTimeout(() => {
+        balloon.style.display = 'block';
+    }, 500);
+
+    // 3. 암전 + 첫 번째 대사
+    await new Promise(res => setTimeout(res, 1500));
     document.body.classList.remove('shake');
-    overlay.style.display = 'flex'; // 영상 오버레이 노출
+    balloon.style.display = 'none';
+    
+    // 오버레이를 먼저 띄우고 텍스트를 넣습니다.
+    overlay.style.display = 'flex';
+    textElement.innerText = "이 기운은... 아카츠키인가?!"; 
+    console.log("대사 출력됨: " + textElement.innerText); // 콘솔창에서 확인용
+
+    // 4. 대사 2초 유지 후 영상 재생
+    await new Promise(res => setTimeout(res, 2000));
+    textElement.innerText = ""; // 영상 재생 전 대사 지우기
+    video.style.display = 'block';
     video.play();
 
-    // 영상 재생이 끝나면 오버레이를 끄고 1초 뒤 마지막 5라운드 시작
-    video.onended = () => {
+    // 5. 영상 종료 후 로직
+    video.onended = async () => {
+        video.style.display = 'none';
+        
+        // 6. 암전 상태 유지하며 두 번째 대사 출력
+        textElement.innerText = "치잇, 조심해! 마지막 훈련을 마쳐야 한다!";
+        console.log("두 번째 대사 출력됨: " + textElement.innerText);
+        
+        await new Promise(res => setTimeout(res, 2500)); 
+        
+        // 7. 다시 원래 화면으로 복귀
         overlay.style.display = 'none';
+        textElement.innerText = "";
         
         setTimeout(() => {
             currentRound = 5;
